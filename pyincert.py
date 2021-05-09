@@ -6,9 +6,9 @@ import math
 # qué no), sino más bien para ser importada dentro del REPL en la línea de
 # comandos y ser usada para hacer los cálculos ahí mismo. Por ejemplo:
 #
-# >>> from valerror import V
+# >>> from pyincert import V
 # >>> 3 - (V(12.7, 2e-5) ** 3) / 2
-# (Valor: -1021.1914999999999, Error: -2e-05)
+# (Valor: -1021.1914999999999, Error: 2e-05)
 
 def esNumero(obj):
     return isinstance(obj, (int, float)) and not isinstance(obj, bool)
@@ -66,7 +66,7 @@ class V:
         """
 
         if esNumero(otro): return V(self.valor - otro, self.error)
-        return V(self.valor - otro.valor, math.sqrt(self.error ** 2 - otro.error ** 2))
+        return V(self.valor - otro.valor, math.sqrt(self.error ** 2 + otro.error ** 2))
 
     def __rsub__(self, otro):
         """
