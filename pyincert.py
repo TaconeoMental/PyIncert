@@ -136,8 +136,8 @@ class V:
         >>> V(7, 9.886) ** 2 ** V(7)
         """
 
-        if esNumero(exponente): return V(self.valor ** exponente, self.error)
-        return V(self.valor ** exponente, exponente * self.valor ** (exponente - 1) * self.error)
+        # if esNumero(exponente): return V(self.valor ** exponente, self.error)
+        return V(self.valor ** exponente, exponente * (self.valor ** (exponente - 1)) * self.error)
 
     # No es necesario :)
     # def __rpow__(self, otro):
