@@ -43,7 +43,7 @@ class V:
         """
 
         if esNumero(otro): return V(self.valor + otro, self.error)
-        return V(self.valor + otro.valor, self.error + otro.error)
+        return V(self.valor + otro.valor, math.sqrt(self.error ** 2 + otro.error ** 2))
 
     def __radd__(self, otro):
         """
@@ -66,7 +66,7 @@ class V:
         """
 
         if esNumero(otro): return V(self.valor - otro, self.error)
-        return V(self.valor - otro.valor, self.error - otro.error)
+        return V(self.valor - otro.valor, math.sqrt(self.error ** 2 - otro.error ** 2))
 
     def __rsub__(self, otro):
         """
@@ -88,7 +88,7 @@ class V:
         >>> V(2, 1e-4) * 3 * V(4)
         """
 
-        if esNumero(otro): return V(self.valor * otro, self.error)
+        if esNumero(otro): return V(self.valor * otro, self.error * otro)
         m = self.valor * otro.valor
         return V(m, m * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
