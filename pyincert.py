@@ -31,7 +31,7 @@ class P:
 # operador.
 # Ejemplo:
 # Podemos escribir un valor de 12.5 +- 0.1% de 3 formas:
-# 1) Manualmente: V(12.5, 12.5 * 0.1)
+# 1) Manualmente: V(12.5, 12.5 * (0.1 / 100))
 # 2) Con una instancia de la clase: V(12.5, P(0.1))
 # 3) Con el pseudo operador de porcentaje: V(12.5, 0.1%pc)
 pc = P()
