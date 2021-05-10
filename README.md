@@ -24,17 +24,25 @@ En caso de operar con un valor sin error asociado, se puede omitir el uso del ob
 ```python
 V(3, 0) * V(12, 0.1) == V(3) * V(12, 0.1) == 3 * V(12, 0.1) == V(12, 0.1) * 3
 ```
-PyIncert también incluye la clase __P__ que representa un porcentaje. Con este objeto podemos trabajar con valores del tipo ```V ± E%```. Esta puede ser usada creando una instancia de la misma u operando el valor de error con una instancia ya creada usando el operador módulo (%). Para esta última opción, PyIncert ya incluye una instancia de __P__ llamada __pc__.
-```python
-from pyincert import V, P, pc
 
-r1 = V(3.3e4, P(5)) # 3.3e4 ± 5%
+### Errores Relativos
+PyIncert también incluye la clase __ER__ que representa un error relativo. Con este objeto podemos trabajar con valores del tipo ```V ± E%```. Esta puede ser usada creando una instancia de la misma u operando el valor de error con una instancia ya creada usando el operador módulo (%). Para esta última opción, PyIncert ya incluye una instancia de __ER__ llamada __er__.
+```python
+from pyincert import V, ER, er
+
+r1 = V(3.3e4, ER(5)) # 3.3e4 ± 5%
 
 # De forma equivalente (y preferible)
-r2 = V(3.3e4, 5%pc)
+r2 = V(3.3e4, 5%er)
 print(r2) # (Valor: 33000.0, Error: 1650.0)
+
+# Algunas personas me han comentado que han hecho esto:
+_ = er # Así queda más limpio visualmente el error relativo
+r3 = V(3.3e4, 5%_)
 ```
-La representación de un objeto V por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cantdec_ de __V__.
+
+### Representación
+La representación de un objeto V es ```V(Valor: valor, Error: error)``` y por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cantdec_ de __V__.
 ```python
 from pyincert import V, pc
 import math
@@ -42,6 +50,6 @@ import math
 a = V(math.pi, 23%pc) # π ± 23%
 print(a) # (Valor: 3.1416, Error: 0.7226)
 
-V.cantdec(10)
+V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 dígitos
 print(a) # (Valor: 3.1415926536, Error: 0.7225663103)
 ```

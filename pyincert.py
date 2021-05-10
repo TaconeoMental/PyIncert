@@ -1,22 +1,12 @@
 import math
 
-# Esta "librería" basicamente les permite trabajar y operar valores junto con sus
-# errores correspondientes. Pongo librería entre comillas porque no está
-# realmente creada para ser usada dentro de otro programa (aunque se puede, por
-# qué no), sino más bien para ser importada dentro del REPL en la línea de
-# comandos y ser usada para hacer los cálculos ahí mismo. Por ejemplo:
-#
-# >>> from pyincert import V
-# >>> 3 - (V(12.7, 2e-5) ** 3) / 2
-# (Valor: -1021.1914999999999, Error: 2e-05)
-
 # Devuelve true si obj es un int o un float, false en caso contrario
 def es_numero(obj):
     return isinstance(obj, (int, float)) and not isinstance(obj, bool)
 
-class P:
+class ER:
     """
-    Clase creada para representar un porcentaje.
+    Clase creada para representar un error relativo
     """
     def __init__(self, valor=0):
         if not es_numero(valor):
@@ -30,11 +20,11 @@ class P:
 # Instancia defecto de la clase. Esto nos permitirá usarla casi como un
 # operador.
 # Ejemplo:
-# Podemos escribir un valor de 12.5 +- 0.1% de 3 formas:
+# Podemos escribir un valor de 12.5 ± 0.1% de 3 formas:
 # 1) Manualmente: V(12.5, 12.5 * (0.1 / 100))
-# 2) Con una instancia de la clase: V(12.5, P(0.1))
-# 3) Con el pseudo operador de porcentaje: V(12.5, 0.1%pc)
-pc = P()
+# 2) Con una instancia de la clase: V(12.5, ER(0.1))
+# 3) Con el pseudo operador de porcentaje: V(12.5, 0.1%er)
+er = ER()
 
 # Clase principal
 class V:
@@ -53,10 +43,10 @@ class V:
         (valor o error) no es un número.
         """
 
-        if not es_numero(valor) or not (es_numero(error) or isinstance(error, P)):
+        if not es_numero(valor) or not (es_numero(error) or isinstance(error, ER)):
             raise TypeError("Eso no es un número a :(")
         self.valor = valor
-        self.error = self.valor * error.valor if isinstance(error, P) else error
+        self.error = self.valor * error.valor if isinstance(error, ER) else error
 
     @classmethod
     def cantdec(cls, num):
@@ -66,7 +56,7 @@ class V:
 
     def __repr__(self):
         """Representación bonita :)"""
-        return f"(Valor: {round(self.valor, self.cant_decimales)}, Error: {round(self.error, self.cant_decimales)})"
+        return f"V(Valor: {round(self.valor, self.cant_decimales)}, Error: {round(self.error, self.cant_decimales)})"
 
     def __add__(self, otro):
         """
