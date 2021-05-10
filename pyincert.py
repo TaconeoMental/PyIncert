@@ -112,7 +112,7 @@ class V:
         >>> V(421, 68) / 3 / V(6, 2)
         """
 
-        if esNumero(otro): return V(self.valor / otro, self.error)
+        if esNumero(otro): return V(self.valor / otro, self.error / otro)
         d = self.valor / otro.valor
         return V(d, d * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
