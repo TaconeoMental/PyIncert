@@ -1,5 +1,12 @@
 import math
 
+# En general, si el resultado R es una función de medidas (x, y, ...) en donde
+# R = f(x, y, ...), la fórmula general para la propagación de errores es:
+#  δR = sqrt((∂R/∂x × δx)^2 + (∂R/∂y × δy)^2 + ...)
+# Notando que ∂R/∂x es la notación para la derivada parcial y δx el error
+# asociado a la variable.
+# De acá se deducirán todas las fórmulas.
+
 # Devuelve true si obj es un int o un float, false en caso contrario
 def es_numero(obj):
     return isinstance(obj, (int, float)) and not isinstance(obj, bool)
@@ -115,6 +122,11 @@ class V:
 
         if es_numero(otro): return V(self.valor * otro, self.error * otro)
         m = self.valor * otro.valor
+
+        # Otro valor de error válido sería (Abuso de paréntesis para que quede claro):
+        #  math.sqrt((self.valor ** 2) * (otro.error ** 2) + (otro.valor ** 2) * (self.error ** 2))
+        # Dejo el que está y porque se deduce con logaritmos y uno se siente
+        # más bacán cuando usa logaritmos.
         return V(m, m * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
     def __rmul__(self, otro):
@@ -139,6 +151,8 @@ class V:
 
         if es_numero(otro): return V(self.valor / otro, self.error / otro)
         d = self.valor / otro.valor
+
+        # Acá aplica lo mismo que en la multiplicación (leer más arriba).
         return V(d, d * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
     def __rtruediv__(self, otro):
@@ -161,5 +175,8 @@ class V:
         >>> V(7, 9.886) ** 2 ** V(7)
         """
 
+        # TODO: Permitir elevar un objeto V a otro objeto V. Basta con sacar
+        # las derivadas parciales de f(x, y) = x^y, pero es tarde y me da lata.
+        # :)
         return V(self.valor ** exponente, exponente * (self.valor ** (exponente - 1)) * self.error)
 
