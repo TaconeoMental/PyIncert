@@ -14,11 +14,11 @@ resistencia = V(4.3e3, 16) # 4.3e3Ω ± 16
 
 # Operamos normalmente
 corriente = voltaje / resistencia
-print(corriente) # (Valor: 0.0028, Error: 0.0003)
+print(corriente) # V(Valor: 0.0028, Error: 0.0003)
 
 # Otro ejemplo
 potencia = V(10e3, 24) * V(2.8e-3, 3e-4) ** 2
-print(potencia) # (Valor: 0.0784, Error: 0.0168)
+print(potencia) # V(Valor: 0.0784, Error: 0.0168)
 ```
 En caso de operar con un valor sin error asociado, se puede omitir el uso del objeto __V__ y trabajar directamente con el literal, es decir:
 ```python
@@ -34,7 +34,7 @@ r1 = V(3.3e4, ER(5)) # 3.3e4 ± 5%
 
 # De forma equivalente (y preferible)
 r2 = V(3.3e4, 5%er)
-print(r2) # (Valor: 33000.0, Error: 1650.0)
+print(r2) # V(Valor: 33000.0, Error: 1650.0)
 
 # Algunas personas me han comentado que han hecho esto:
 _ = er # Así queda más limpio visualmente el error relativo
@@ -48,8 +48,12 @@ from pyincert import V, pc
 import math
 
 a = V(math.pi, 23%pc) # π ± 23%
-print(a) # (Valor: 3.1416, Error: 0.7226)
+print(a) # V(Valor: 3.1416, Error: 0.7226)
 
 V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 dígitos
-print(a) # (Valor: 3.1415926536, Error: 0.7225663103)
+print(a) # V(Valor: 3.1415926536, Error: 0.7225663103)
 ```
+
+### TODO
+- [ ] Implementar funciones matemáticas (trigonométricas, logaritmos, etc.)
+- [ ] Escribir documentación de funciones matemáticas
