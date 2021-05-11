@@ -51,6 +51,6 @@ V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 
 print(a) # V(Valor: 3.1415926536, Error: 0.7225663103)
 ```
 
-### TODO
+## TODO
 - [ ] Implementar funciones matemáticas (trigonométricas, logaritmos, etc.)
 - [ ] Escribir documentación de funciones matemáticas
