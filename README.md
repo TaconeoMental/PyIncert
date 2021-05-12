@@ -11,11 +11,11 @@ resistencia = V(4.3e3, 16) # 4.3e3Ω ± 16
 
 # Operamos normalmente
 corriente = voltaje / resistencia
-print(corriente) # V(Valor: 0.0028, Error: 0.0003)
+print(corriente) # 0.0028 ± 0.0003
 
 # Otro ejemplo
 potencia = V(10e3, 24) * V(2.8e-3, 3e-4) ** 2
-print(potencia) # V(Valor: 0.0784, Error: 0.0168)
+print(potencia) # 0.0784 ± 0.0168
 ```
 En caso de operar con un valor sin error asociado, se puede omitir el uso del objeto __V__ y trabajar directamente con el literal, es decir:
 ```python
@@ -31,7 +31,7 @@ r1 = V(3.3e4, ER(5)) # 3.3e4 ± 5%
 
 # De forma equivalente (y preferible)
 r2 = V(3.3e4, 5%er)
-print(r2) # V(Valor: 33000.0, Error: 1650.0)
+print(r2) # 33000.0 ± 1650.0
 
 # Algunas personas me han comentado que han hecho esto:
 _ = er # Así queda más limpio visualmente el error relativo
@@ -39,16 +39,18 @@ r3 = V(3.3e4, 5%_)
 ```
 
 ### Representación
-La representación de un objeto V es ```V(Valor: valor, Error: error)``` y por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cantdec_ de __V__.
+La representación de un objeto V es ```Valor ± Error``` y por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cantdec_ de __V__. En caso de que la consola no soporte Unicode se puede llamar al método de clase _unicode_ con el argumento _False_ para que la representación sea ```Valor +/- Error```.
 ```python
-from pyincert import V, pc
+from pyincert import V, er
 import math
 
-a = V(math.pi, 23%pc) # π ± 23%
-print(a) # V(Valor: 3.1416, Error: 0.7226)
+a = V(math.pi, 23%er) # π ± 23%
+print(a) # 3.1416 ± 0.7226
 
 V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 dígitos
-print(a) # V(Valor: 3.1415926536, Error: 0.7225663103)
+V.unicode(False) # Ahora se usará "+/-" en vez de "±"
+
+print(a) # 3.1415926536 +/- 0.7225663103
 ```
 
 ## TODO

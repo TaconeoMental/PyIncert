@@ -44,6 +44,11 @@ class V:
     # necesario usar el método V.cantdec.
     cant_decimales = 4
 
+    # Este es el separador que se usará en el método __repr__. Puede ser
+    # cambiada por "+/-" con el método de clase V.unicode(false) por si la
+    # consola no soporta unicode.
+    pm = "±"
+
     def __init__(self, valor, error = 0):
         """
         Inicializa la clase y arroja un error si alguno de los parámetros
@@ -61,9 +66,16 @@ class V:
             return
         cls.cant_decimales = num
 
+    @classmethod
+    def unicode(cls, b):
+        if b:
+            cls.pm = "±"
+        else:
+            cls.pm = "+/-"
+
     def __repr__(self):
         """Representación bonita :)"""
-        return f"V(Valor: {round(self.valor, self.cant_decimales)}, Error: {round(self.error, self.cant_decimales)})"
+        return f"{round(self.valor, self.cant_decimales)} {V.pm} {round(self.error, self.cant_decimales)}"
 
     def __add__(self, otro):
         """
