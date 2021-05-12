@@ -38,6 +38,20 @@ _ = er # Así queda más limpio visualmente el error relativo
 r3 = V(3.3e4, 5%_)
 ```
 
+### Funciones Matemáticas
+PyIncert incluye un pequeño sub-módulo con algunas funciones matemáticas hechas
+para trabajar con objetos __V__. Estas devuelven un nuevo objeto __V__ con el
+valor evaluado y el error propagado por la función.
+```python
+from pyincert import V
+from pyincert.math import sin, radians
+
+theta = V(180, 1) # 180° ± 1
+theta_rad = radians(theta)
+
+print(sin(theta_rad)) # 0.0 ± 0.0175
+```
+
 ### Representación
 La representación de un objeto V es ```Valor ± Error``` y por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cantdec_ de __V__. En caso de que la consola no soporte Unicode se puede llamar al método de clase _unicode_ con el argumento _False_ para que la representación sea ```Valor +/- Error```.
 ```python
@@ -47,7 +61,7 @@ import math
 a = V(math.pi, 23%er) # π ± 23%
 print(a) # 3.1416 ± 0.7226
 
-V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 dígitos
+V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 decimales
 V.unicode(False) # Ahora se usará "+/-" en vez de "±"
 
 print(a) # 3.1415926536 +/- 0.7225663103

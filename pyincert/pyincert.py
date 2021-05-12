@@ -139,7 +139,7 @@ class V:
         #  math.sqrt((self.valor ** 2) * (otro.error ** 2) + (otro.valor ** 2) * (self.error ** 2))
         # Dejo el que está y porque se deduce con logaritmos y uno se siente
         # más bacán cuando usa logaritmos.
-        return V(m, math.fabs(m) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
+        return V(m, abs(m) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
     def __rmul__(self, otro):
         """
@@ -165,7 +165,7 @@ class V:
         d = self.valor / otro.valor
 
         # Acá aplica lo mismo que en la multiplicación (leer más arriba).
-        return V(d, math.fabs(d) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
+        return V(d, abs(d) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
     def __rtruediv__(self, otro):
         """
