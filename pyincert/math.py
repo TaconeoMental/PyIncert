@@ -19,28 +19,30 @@ from .pyincert import V
 # engorrosa:
 #
 # import pyincert
-# a = pyincert.math.sin(pyincert.V(3, pyincert.ER(4))
+# a = pyincert.math.sin(pyincert.V(3, pyincert.ER(4)))
 
 # Notar que si tengo una función "f" de una única variable x, podemos propagar
 # su error como: δf = abs(df/dx)δx
-
 
 def sin(v_rad):
     """Función seno para un objeto V"""
 
     # (d/dx)sin(x) = cos(x)
-    return V(math.sin(v_rad.valor), abs(pow(math.cos(v_rad.valor), 2) * v_rad.error))
+    return V(math.sin(v_rad.valor), abs(math.cos(v_rad.valor)) * v_rad.error)
 
 def cos(v_rad):
     """Función coseno para un objeto V"""
 
     # (d/dx)cos(x) = -sin(x)
-    return V(math.cos(v_rad.valor), abs(pow(-math.sin(v_rad.valor), 2) * v_rad.error))
+    return V(math.cos(v_rad.valor), abs(math.sin(v_rad.valor)) * v_rad.error)
 
 def tan(v_rad):
     """Función tangente para objetos V"""
+    # Podría perfectamente hacer sin(v_rad) / cos(v_rad), pero es mi librería y
+    # chao haters B)
 
-    return sin(v_rad) / cos(v_rad)
+    # (d/dx)tan(x) = sec(x)^2 = cos(x)^-2
+    return V(math.tan(v_rad.valor), pow(math.cos(v_rad.valor), -2) * v_rad.error)
 
 def degrees(v_rad):
     return v_rad * 180 / math.pi
