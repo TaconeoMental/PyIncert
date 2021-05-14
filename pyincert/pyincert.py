@@ -86,7 +86,9 @@ class V:
         >>> V(3, 0.01) + 2 + 3 + V(8)
         """
 
-        if es_numero(otro): return V(self.valor + otro, self.error)
+        if es_numero(otro):
+            return self + V(otro)
+
         return V(self.valor + otro.valor, math.sqrt(self.error ** 2 + otro.error ** 2))
 
     def __radd__(self, otro):
@@ -109,7 +111,9 @@ class V:
         >>> V(3, 1e-5) - 8
         """
 
-        if es_numero(otro): return V(self.valor - otro, self.error)
+        if es_numero(otro):
+            return self - V(otro)
+
         return V(self.valor - otro.valor, math.sqrt(self.error ** 2 + otro.error ** 2))
 
     def __rsub__(self, otro):
@@ -132,14 +136,13 @@ class V:
         >>> V(2, 1e-4) * 3 * V(4)
         """
 
-        if es_numero(otro): return V(self.valor * otro, self.error * otro)
-        m = self.valor * otro.valor
+        if es_numero(otro):
+            # Podría hacer otro = V(otro), pero se me desordenan los tipos en
+            # la cabeza
+            return self * V(otro)
 
-        # Otro valor de error válido sería (Abuso de paréntesis para que quede claro):
-        #  math.sqrt((self.valor ** 2) * (otro.error ** 2) + (otro.valor ** 2) * (self.error ** 2))
-        # Dejo el que está y porque se deduce con logaritmos y uno se siente
-        # más bacán cuando usa logaritmos.
-        return V(m, abs(m) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
+        m = self.valor * otro.valor
+        return V(m, math.sqrt(pow(self.valor * otro.error, 2) + pow(otro.valor * self.error, 2)))
 
     def __rmul__(self, otro):
         """
@@ -150,7 +153,7 @@ class V:
         >>> 2.5 * V(7.99993, 3e-89)
         """
 
-        return self * otro
+        return V(otro) * self
 
     def __truediv__(self, otro):
         """
@@ -161,10 +164,10 @@ class V:
         >>> V(421, 68) / 3 / V(6, 2)
         """
 
-        if es_numero(otro): return V(self.valor / otro, self.error / otro)
-        d = self.valor / otro.valor
+        if es_numero(otro):
+            return self / V(otro)
 
-        # Acá aplica lo mismo que en la multiplicación (leer más arriba).
+        d = self.valor / otro.valor
         return V(d, abs(d) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
 
     def __rtruediv__(self, otro):
@@ -190,5 +193,6 @@ class V:
         # TODO: Permitir elevar un objeto V a otro objeto V. Basta con sacar
         # las derivadas parciales de f(x, y) = x^y, pero es tarde y me da lata.
         # :)
-        return V(self.valor ** exponente, exponente * (self.valor ** (exponente - 1)) * self.error)
+        e = self.valor ** exponente
+        return V(e, abs(exponente * (self.valor ** (exponente - 1)) * self.error))
 
