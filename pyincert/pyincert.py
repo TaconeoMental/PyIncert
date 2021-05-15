@@ -11,6 +11,22 @@ import math
 def es_numero(obj):
     return isinstance(obj, (int, float)) and not isinstance(obj, bool)
 
+# Esta función es media compleja de explicar. Lo que pasa es que la fórmula
+# general real del error propagado de una función de dos variables es:
+# δf(x, y) = sqrt((∂R/∂x × δx)^2 + (∂R/∂y × δy)^2 + 2(∂R/∂x)(∂R/∂y)ρδyδx)
+#                                                   ~~~~~~~~~~~~~~~~~~~
+# Es básicamente un cuadrado de binomio, pero ese término subrayado depende de
+# la correlación de las variables x e y. Si x e y son variables no
+# correlacionadas, ρδxδy = 0, quedando solo la suma de los cuadrados.
+# Entonces, esta función me devuelve 0 si v1 y v2 no están correlacionados, y
+# 2(∂R/∂x)(∂R/∂y)ρδyδx si lo están (v1 is v2, en python).
+# La llamo sumando central solo porque cuando uno desarrolla un cuadrado de
+# binomio a mano, el sumando "2ab" queda al centro.
+def sumando_central(v1, v2, dfdx, dfdy):
+    if v1 is v2:
+        return 2 * dfdx * dfdy* v1.error * v2.error
+    return 0
+
 class ER:
     """
     Clase creada para representar un error relativo
@@ -61,17 +77,20 @@ class V:
         self.error = self.valor * error.valor if isinstance(error, ER) else error
 
     @classmethod
-    def cantdec(cls, num):
+    def cant_dec(cls, num):
         if num < 0:
             return
         cls.cant_decimales = num
 
     @classmethod
-    def unicode(cls, b):
+    def use_unicode(cls, b):
         if b:
             cls.pm = "±"
         else:
             cls.pm = "+/-"
+
+    def error_relativo(self):
+        return self.error / self.valor
 
     def __repr__(self):
         """Representación bonita :)"""
@@ -89,7 +108,10 @@ class V:
         if es_numero(otro):
             return self + V(otro)
 
-        return V(self.valor + otro.valor, math.sqrt(self.error ** 2 + otro.error ** 2))
+        s = self.valor + otro.valor
+        return V(s, math.sqrt(pow(self.error, 2)
+                              + pow(otro.error, 2)
+                              + sumando_central(self, otro, 1, 1)))
 
     def __radd__(self, otro):
         """
@@ -114,7 +136,10 @@ class V:
         if es_numero(otro):
             return self - V(otro)
 
-        return V(self.valor - otro.valor, math.sqrt(self.error ** 2 + otro.error ** 2))
+        r = self.valor - otro.valor
+        return V(r, math.sqrt(pow(self.error, 2)
+                              + pow(otro.error, 2)
+                              + sumando_central(self, otro, 1, 1)))
 
     def __rsub__(self, otro):
         """
@@ -142,7 +167,10 @@ class V:
             return self * V(otro)
 
         m = self.valor * otro.valor
-        return V(m, math.sqrt(pow(self.valor * otro.error, 2) + pow(otro.valor * self.error, 2)))
+        return V(m, math.sqrt(pow(self.valor * otro.error, 2)
+                              + pow(otro.valor * self.error, 2)
+                              + sumando_central(self, otro, self.valor, otro.valor)))
+
 
     def __rmul__(self, otro):
         """
@@ -168,7 +196,10 @@ class V:
             return self / V(otro)
 
         d = self.valor / otro.valor
-        return V(d, abs(d) * math.sqrt((self.error / self.valor) ** 2 + (otro.error / otro.valor) ** 2))
+        return V(d, math.sqrt(pow(self.error / otro.valor, 2)
+                              + pow(self.valor * otro.error / otro.valor**2 ,2)
+                              + sumando_central(self, otro, 1/otro.valor,
+                                                -self.valor/(otro.valor)**2)))
 
     def __rtruediv__(self, otro):
         """

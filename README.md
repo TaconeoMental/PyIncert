@@ -22,6 +22,21 @@ En caso de operar con un valor sin error asociado, se puede omitir el uso del ob
 V(3, 0) * V(12, 0.1) == V(3) * V(12, 0.1) == 3 * V(12, 0.1) == V(12, 0.1) * 3
 ```
 
+Nótese que PyIncert toma en cuenta la correlación entre variables al momento de
+calcular.
+```python
+from pyincert import V
+
+x = V(3.14, 1) # 3.14 ± 1
+y = V(3.14, 1)
+
+print(x / x) # 1.0 ± 0.0
+print(x / y) # 1.0 ± 0.4504
+
+print(x * x) # 9.8596 ± 6.28
+print(x * y) # 9.8596 ± 4.4406
+```
+
 ### Errores Relativos
 PyIncert también incluye la clase __ER__ que representa un error relativo. Con este objeto podemos trabajar con valores del tipo ```V ± E%```. Esta puede ser usada creando una instancia de la misma u operando el valor de error con una instancia ya creada usando el operador módulo (%). Para esta última opción, PyIncert ya incluye una instancia de __ER__ llamada __er__.
 ```python
@@ -53,7 +68,7 @@ print(sin(theta_rad)) # 0.0 ± 0.0175
 ```
 
 ### Representación
-La representación de un objeto V es ```Valor ± Error``` y por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cantdec_ de __V__. En caso de que la consola no soporte Unicode se puede llamar al método de clase _unicode_ con el argumento _False_ para que la representación sea ```Valor +/- Error```.
+La representación de un objeto V es ```Valor ± Error``` y por defecto redondea ambos valores a los primeros 4 decimales. Esto es meramente por temas estéticos, pues la aproximación no se usa al calcular. De todas formas, es posible cambiar la cantidad de decimales mostrados usando el método de clase _cant_dec_ de __V__. En caso de que la consola no soporte Unicode se puede llamar al método de clase _use_unicode_ con el argumento _False_ para que la representación sea ```Valor +/- Error```.
 ```python
 from pyincert import V, er
 import math
@@ -61,8 +76,8 @@ import math
 a = V(math.pi, 23%er) # π ± 23%
 print(a) # 3.1416 ± 0.7226
 
-V.cantdec(10) # Ahora la representación redondea los valores a los primeros 10 decimales
-V.unicode(False) # Ahora se usará "+/-" en vez de "±"
+V.cant_dec(10) # Ahora la representación redondea los valores a los primeros 10 decimales
+V.use_unicode(False) # Ahora se usará "+/-" en vez de "±"
 
 print(a) # 3.1415926536 +/- 0.7225663103
 ```
