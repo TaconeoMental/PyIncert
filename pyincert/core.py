@@ -1,5 +1,7 @@
 import math
 
+__all__ = ["V", "ER", "er"]
+
 # En general, si el resultado R es una función de medidas (x, y, ...) en donde
 # R = f(x, y, ...), la fórmula general para la propagación de errores es:
 #  δR = sqrt((∂R/∂x × δx)^2 + (∂R/∂y × δy)^2 + ...)
