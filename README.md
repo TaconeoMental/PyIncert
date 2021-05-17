@@ -1,4 +1,4 @@
-# PyIncert
+# <img width="30px" src="https://raw.githubusercontent.com/TaconeoMental/PyIncert/main/assets/logo.png"> PyIncert
 Pequeña librería para trabajar con propagación de errores.
 
 ## Uso
