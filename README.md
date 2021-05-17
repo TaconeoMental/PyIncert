@@ -82,6 +82,8 @@ V.use_unicode(False) # Ahora se usará "+/-" en vez de "±"
 print(a) # 3.1415926536 +/- 0.7225663103
 ```
 
-## TODO
-- [ ] Implementar funciones matemáticas (trigonométricas, logaritmos, etc.)
-- [ ] Escribir documentación de funciones matemáticas
+## Licencia
+La librería PyIncert se encuentra publicada bajo la licencia GPLv3.
+Copyleft (c) 2021 Mateo Contenla
+
+Para más información, favor referirse al archivo de [Licencia](https://github.com/TaconeoMental/PyIncert/blob/master/LICENSE)
