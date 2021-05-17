@@ -84,6 +84,6 @@ print(a) # 3.1415926536 +/- 0.7225663103
 
 ## Licencia
 La librería PyIncert se encuentra publicada bajo la licencia GPLv3.
-Copyleft (c) 2021 Mateo Contenla
+Para más información, favor referirse al archivo de [Licencia](https://github.com/TaconeoMental/PyIncert/blob/main/LICENSE)
 
-Para más información, favor referirse al archivo de [Licencia](https://github.com/TaconeoMental/PyIncert/blob/master/LICENSE)
+Copyleft (C) 2021 Mateo Contenla
