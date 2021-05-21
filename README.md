@@ -1,6 +1,12 @@
 # <img width="30px" src="https://raw.githubusercontent.com/TaconeoMental/PyIncert/main/assets/logo.png"> PyIncert
 Pequeña librería para trabajar con propagación de errores.
 
+## Instalación
+PyIncert se puede instalar directamente desde PyPI usando pip:
+```
+python3 -m pip install pyincert
+```
+
 ## Uso
 En PyIncert se trabaja con los objetos __V__ que representan una tupla de un valor y su error. Los cálculos matemáticos se harán con estos objetos mayoritariamente en reemplazo de las clases numéricas primitivas de Python (int y float). El formato para crear un objeto __V__ es simplemente ```V(Valor, Error)```. Las operaciones disponibles actualmente son: adición, sustracción, multiplicación, divisón, y potenciación. Todas estas se realizan con los operadores nativos de Python correspondientes a cada operación.
 ```python
