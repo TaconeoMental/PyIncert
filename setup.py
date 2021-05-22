@@ -1,5 +1,5 @@
 from os import path
-from distutils.core import setup
+from setuptools import setup
 
 lib_root = path.abspath(path.dirname(__file__))
 
