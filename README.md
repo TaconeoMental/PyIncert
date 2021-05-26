@@ -1,6 +1,7 @@
 # <img width="30px" src="https://raw.githubusercontent.com/TaconeoMental/PyIncert/main/assets/logo.png"> PyIncert
 ![PyPI](https://img.shields.io/pypi/v/pyincert)
 ![PyPI - Status](https://img.shields.io/pypi/status/pyincert)
+[![Downloads](https://static.pepy.tech/personalized-badge/pyincert?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=downloads)](https://pepy.tech/project/pyincert)
 
 Pequeña librería para trabajar con propagación de errores.
 
