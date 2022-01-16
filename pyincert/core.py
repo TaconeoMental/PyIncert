@@ -3,7 +3,7 @@ import sys
 
 # __all__ = ["V", "ER", "er"]
 
-from .util import lambdify, jacobiana
+from .util import lambdify, gradiente
 
 # =========== Fin de los imports ==========
 
@@ -12,14 +12,14 @@ def es_numero(obj):
     return isinstance(obj, (int, float)) and not isinstance(obj, bool)
 
 def crear_binop(func):
-    dx, dy = jacobiana(func)
+    func_x, func_y = gradiente(func)
 
     def operar(self, otro):
         if es_numero(otro):
             return operar(self,  V(otro))
 
-        dx_eval = dx(self.valor, otro.valor)
-        dy_eval = dy(self.valor, otro.valor)
+        fx_eval = func_x(self.valor, otro.valor)
+        fy_eval = func_y(self.valor, otro.valor)
 
         res = func(self.valor, otro.valor)
 
@@ -96,8 +96,7 @@ class V:
             desv_est = self.valor * desv_est.valor
         self.desv_est = desv_est
 
-        self.comb_lineal = {}
-
+        self.comb_lineal = CombinacionLineal(self, 1.0)
 
     @classmethod
     def cant_dec(cls, num):

@@ -86,27 +86,31 @@ else:
 
         try:
             symbol_func = func(*symbol_params)
+            symbol_diff = sympy.diff(symbol_func, symbol_params[par_index])
+            return sympy.lambdify(symbol_params, symbol_diff)
         except TypeError:
             # Si la derivada calculada simbólicamente falla (porque usa
             # funciones externas por ejemplo), simplemente la cálculamos con
             # aproimaciones de diferencias finitas.
             return parcial_diff(func, par_index)
 
-        symbol_diff = sympy.diff(symbol_func, symbol_params[par_index])
-        return sympy.lambdify(symbol_params, symbol_diff)
+class CombinacionLineal:
+    def __init__(self, **kwargs):
+        # V: K
+        self.terms = {**kwargs}
 
-# Se explica sola. Si no es así, vuelve revisar tus apuntes de CVV.
-# Esta aplica solamente para funciones definidad de R_n -> R. Por esto mismo
-# calculo solamente la primera fila. ¿Podría generalizar la función? Si, ¿Me da
-# lata hacerlo? también.
-def jacobiana(func):
+    def calc():
+        return sum([k * v for k, v in self.terms.items()])
+
+# Se explica sola.
+def gradiente(func):
     arity = func.__code__.co_argcount
-    m_jacobiana = list()
+    m_grad = list()
 
     for index in range(arity):
-        m_jacobiana.append(parcial(func, index))
+        m_grad.append(parcial(func, index))
 
-    return m_jacobiana
+    return m_grad
 
 
 # Esta función me costó más de lo que me gutaría admitir.
@@ -130,7 +134,7 @@ def jacobiana(func):
 #
 # Ahora puedo llamar a "func" y esta se va a asegurar de que reciba la cantidad
 # exacta de argumentos, incluso como keywords: func(x=9, y=8).
-# Si la cantidad o los nombres de los argumentos están mal, seleventará un
+# Si la cantidad o los nombres de los argumentos están mal, se leventará un
 # TypeError como cualquier función lo haría normalmente.
 def lambdify(param_names):
     """
@@ -173,4 +177,3 @@ def exportador():
             all_.append(obj.__name__)
         return obj
     return dec, all_
-
